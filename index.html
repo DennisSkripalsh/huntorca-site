@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HuntOrca – Precision Sales Intelligence</title>
+  <meta name="description" content="AI-powered lead discovery and scoring for sales teams hunting high-conversion SMBs.">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300B4D8'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/></svg>">
+  
+  <style>
+    :root {
+      --primary-color: #00B4D8;
+      --primary-hover: #007B9E;
+      --dark-bg: #0A0A0A;
+      --light-bg: #FAFAFA;
+      --white: #FFFFFF;
+      --text-primary: #0A0A0A;
+      --text-secondary: #666666;
+      --border-color: #E5E5E5;
+      --max-width: 1200px;
+      --section-padding: 120px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: var(--white);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-bottom: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .nav-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo::before {
+      content: "🐋";
+      font-size: 28px;
+    }
+
+    .nav-cta {
+      background: var(--primary-color);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-cta:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a1a 100%);
+      color: var(--white);
+      padding: 140px 24px 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 180, 216, 0.1) 0%, transparent 70%);
+    }
+
+    .hero-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, var(--white) 0%, #e0e0e0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      margin-bottom: 40px;
+      color: #cccccc;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 500;
+    }
+
+    .hero-cta {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+      color: var(--white);
+      padding: 20px 40px;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 180, 216, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 180, 216, 0.4);
+    }
+
+    /* Section Styles */
+    .section {
+      padding: var(--section-padding) 24px;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section h2 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+    }
+
+    .section-subtitle {
+      font-size: 20px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Why HuntOrca */
+    .why-section {
+      background: var(--light-bg);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      margin-top: 60px;
+    }
+
+    .feature-card {
+      background: var(--white);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      border: 1px solid var(--border-color);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+    }
+
+    .feature-card h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* How It Works */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 50px;
+      margin-top: 80px;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0 auto 24px;
+      box-shadow: 0 4px 20px rgba(0, 180, 216, 0.2);
+    }
+
+    .step h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .step p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Who It's For */
+    .audience-section {
+      background: var(--light-bg);
+    }
+
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .audience-card {
+      background: var(--white);
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      border: 2px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .audience-card:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    .audience-emoji {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+
+    .audience-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a1a 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 120px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 180, 216, 0.1) 0%, transparent 70%);
+    }
+
+    .cta-container {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+
+    .cta-section p {
+      font-size: 20px;
+      margin-bottom: 40px;
+      color: #cccccc;
+      line-height: 1.5;
+    }
+
+    .waitlist-form {
+      display: flex;
+      gap: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .email-input {
+      flex: 1;
+      min-width: 280px;
+      padding: 16px 20px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      backdrop-filter: blur(10px);
+    }
+
+    .email-input::placeholder {
+      color: #aaa;
+    }
+
+    .email-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+      color: var(--white);
+      padding: 16px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 180, 216, 0.4);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--dark-bg);
+      color: var(--white);
+      padding: 60px 24px 30px;
+      text-align: center;
+    }
+
+    .footer-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .footer-logo::before {
+      content: "🐋";
+      font-size: 32px;
+    }
+
+    .footer-text {
+      color: #999;
+      margin-bottom: 30px;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #333;
+      padding-top: 30px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      :root {
+        --section-padding: 80px;
+      }
+
+      .nav-container {
+        padding: 0 16px;
+      }
+
+      .hero {
+        padding: 120px 16px 80px;
+      }
+
+      .section {
+        padding: var(--section-padding) 16px;
+      }
+
+      .waitlist-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .email-input {
+        min-width: auto;
+      }
+
+      .steps {
+        gap: 40px;
+      }
+
+      .feature-grid, .audience-grid {
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-cta {
+        padding: 16px 32px;
+        font-size: 16px;
+      }
+
+      .step-number {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <div class="logo">HuntOrca</div>
+      <button class="nav-cta" onclick="scrollToWaitlist()">Join the Hunt</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <h1>Hunt smart. Close fast.</h1>
+      <p class="hero-subtitle">AI-powered SMB lead intelligence for sales killers, not list scrapers.</p>
+      <button class="hero-cta" onclick="scrollToWaitlist()">Get Early Access</button>
+    </div>
+  </section>
+
+  <!-- Why HuntOrca Section -->
+  <section class="section why-section">
+    <div class="section-header">
+      <h2>Why HuntOrca?</h2>
+      <p class="section-subtitle">We don't hand you 10,000 cold leads. HuntOrca gives you 10 surgically scored SMBs with high-intent signals, review trend breakdowns, and contact-ready data — so you close faster.</p>
+    </div>
+    
+    <div class="feature-grid">
+      <div class="feature-card animate-on-scroll">
+        <div class="feature-icon">🎯</div>
+        <h3>Surgical Precision</h3>
+        <p>Surface the 1% of leads that actually convert. Backed by real signals — not noise.</p>
+      </div>
+      
+      <div class="feature-card animate-on-scroll">
+        <div class="feature-icon">🧠</div>
+        <h3>AI-Powered Intelligence</h3>
+        <p>Advanced algorithms analyze digital presence, review velocity, and business health signals.</p>
+      </div>
+      
+      <div class="feature-card animate-on-scroll">
+        <div class="feature-icon">⚡</div>
+        <h3>Contact-Ready Profiles</h3>
+        <p>Get ranked leads with suggested scripts and outreach strategies. No more guesswork.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section">
+    <div class="section-header">
+      <h2>How It Works</h2>
+      <p class="section-subtitle">Three steps to transform your lead generation from spray-and-pray to surgical precision.</p>
+    </div>
+    
+    <div class="steps">
+      <div class="step animate-on-scroll">
+        <div class="step-number">1</div>
+        <h3>AI Scans & Analyzes</h3>
+        <p>AI scans review history, digital presence, and domain signals across multiple sources.</p>
+      </div>
+      
+      <div class="step animate-on-scroll">
+        <div class="step-number">2</div>
+        <h3>Intelligent Scoring</h3>
+        <p>Scores each lead on urgency, intent, and conversion potential using proprietary algorithms.</p>
+      </div>
+      
+      <div class="step animate-on-scroll">
+        <div class="step-number">3</div>
+        <h3>Contact & Close</h3>
+        <p>You get ranked, contact-ready profiles — with scripts that convert.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who It's For Section -->
+  <section class="section audience-section">
+    <div class="section-header">
+      <h2>Who It's For</h2>
+      <p class="section-subtitle">Sales reps, agency owners, consultants, SDRs — anyone who hunts.</p>
+    </div>
+    
+    <div class="audience-grid">
+      <div class="audience-card animate-on-scroll">
+        <div class="audience-emoji">📞</div>
+        <h3>Sales Reps</h3>
+      </div>
+      
+      <div class="audience-card animate-on-scroll">
+        <div class="audience-emoji">🏢</div>
+        <h3>Agency Owners</h3>
+      </div>
+      
+      <div class="audience-card animate-on-scroll">
+        <div class="audience-emoji">💼</div>
+        <h3>Consultants</h3>
+      </div>
+      
+      <div class="audience-card animate-on-scroll">
+        <div class="audience-emoji">🎪</div>
+        <h3>SDR Teams</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" id="waitlist">
+    <div class="cta-container">
+      <h2>Be First to Hunt</h2>
+      <p>Join our private beta and gain access to HuntOrca's lead intelligence engine before the masses. The early bird doesn't just get the worm—it gets the contract.</p>
+      
+      <form class="waitlist-form" onsubmit="handleWaitlistSubmit(event)">
+        <input 
+          type="email" 
+          class="email-input" 
+          placeholder="Enter your email to join the hunt"
+          required
+        >
+        <button type="submit" class="submit-btn">Join the Hunt</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">HuntOrca</div>
+      <p class="footer-text">Precision Sales Intelligence for Closers</p>
+      <div class="footer-bottom">
+        &copy; 2025 HuntOrca. All rights reserved. Designed for closers.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scrolling function
+    function scrollToWaitlist() {
+      document.getElementById('waitlist').scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+
+    // Handle waitlist form submission
+    function handleWaitlistSubmit(event) {
+      event.preventDefault();
+      const email = event.target.querySelector('.email-input').value;
+      
+      // Here you would integrate with your actual form service (Tally, Mailchimp, etc.)
+      // For demo purposes, we'll show an alert
+      alert(`Thanks for joining the hunt! We'll be in touch at ${email}`);
+      
+      // Reset form
+      event.target.reset();
+    }
+
+    // Navigation scroll effect
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('.nav');
+      if (window.scrollY > 50) {
+        nav.style.background = 'rgba(255, 255, 255, 0.98)';
+        nav.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+      } else {
+        nav.style.background = 'rgba(255, 255, 255, 0.95)';
+        nav.style.boxShadow = 'none';
+      }
+    });
+
+    // Animate elements on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationDelay = '0.1s';
+          entry.target.classList.add('animate-on-scroll');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animatable elements
+    document.addEventListener('DOMContentLoaded', function() {
+      const animatableElements = document.querySelectorAll('.feature-card, .step, .audience-card');
+      animatableElements.forEach(el => {
+        observer.observe(el);
+      });
+    });
+
+    // Add some interactive hover effects
+    document.querySelectorAll('.feature-card, .audience-card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-8px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+  </script>
+</body>
+</html>
