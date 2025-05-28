@@ -692,6 +692,13 @@
             e.preventDefault();
             const email = e.target.email.value;
             
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+            
             try {
                 const response = await fetch("/api/send-email", {
                     method: "POST",
