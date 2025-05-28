@@ -1,8 +1,4 @@
-// /api/send-email.js - Simple version without nodemailer
-export const config = {
-  runtime: 'nodejs18.x'
-};
-
+// /api/send-email.js - Minimal version
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
@@ -21,16 +17,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Log the email (you can replace this with your preferred method)
-    console.log(`New waitlist signup: ${email}`);
+    // Log the email
+    console.log(`New waitlist signup: ${email} at ${new Date().toISOString()}`);
     
-    // You could also:
-    // - Save to a database
-    // - Send to a webhook service like Zapier
-    // - Use a service like EmailJS, Formspree, or Netlify Forms
-    // - Save to a simple JSON file or CSV
-    
-    // For now, just return success
+    // Return success
     res.status(200).json({ 
       message: "Thanks! You're on the waitlist. We'll be in touch soon!" 
     });
