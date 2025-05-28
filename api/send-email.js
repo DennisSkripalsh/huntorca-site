@@ -1,5 +1,16 @@
-// /api/send-email.js - Minimal version
-export default async function handler(req, res) {
+// /api/send-email.js - Ultra minimal version
+export default function handler(req, res) {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -21,13 +32,13 @@ export default async function handler(req, res) {
     console.log(`New waitlist signup: ${email} at ${new Date().toISOString()}`);
     
     // Return success
-    res.status(200).json({ 
+    return res.status(200).json({ 
       message: "Thanks! You're on the waitlist. We'll be in touch soon!" 
     });
     
   } catch (error) {
     console.error("Error processing email:", error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       message: "Something went wrong. Please try again." 
     });
   }
