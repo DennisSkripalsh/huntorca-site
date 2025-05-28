@@ -2,16 +2,10 @@
   "name": "huntorca-landing",
   "version": "1.0.0",
   "description": "HuntOrca landing page with email collection",
-  "main": "index.js",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "vercel build",
-    "start": "vercel start"
+    "build": "echo 'No build step required'"
   },
-  "dependencies": {
-    "nodemailer": "^6.9.8"
-  },
-  "devDependencies": {},
+  "dependencies": {},
   "keywords": ["landing-page", "email", "saas"],
   "author": "HuntOrca",
   "license": "MIT"
