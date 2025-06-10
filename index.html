@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HuntOrca - AI-Powered SMB Lead Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', 'Satoshi', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #000000 0%, #0a1930 100%);
+            color: #fff;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            color: #fff;
+            overflow: auto;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: relative;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 0.5s ease forwards;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo h1 {
+            margin-left: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .navbar-button {
+            background: #0066FF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .navbar-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 102, 255, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 10%;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .hero-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.2;
+        }
+
+        .bg-circle-1 {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 2px solid #0066FF;
+            top: 20%;
+            left: 10%;
+            opacity: 0.1;
+        }
+
+        .bg-circle-2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 2px solid #0066FF;
+            bottom: 10%;
+            right: 15%;
+            opacity: 0.1;
+        }
+
+        .bg-circle-3 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            border: 1px solid #0066FF;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.05;
+        }
+
+        .hero h2 {
+            font-size: 64px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease 0.2s forwards;
+        }
+
+        .hero p {
+            font-size: 22px;
+            max-width: 800px;
+            margin-bottom: 40px;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease 0.4s forwards;
+        }
+
+        .hero-button {
+            background: #0066FF;
+            color: #fff;
+            border: none;
+            padding: 18px 36px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4);
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease 0.6s forwards;
+        }
+
+        .hero-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 102, 255, 0.5);
+        }
+
+        .hero-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 10%;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .feature-card.animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 102, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            margin-bottom: 20px;
+            color: #0066FF;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .feature-card p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 100px 10%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .how-it-works h3 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 60px;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .how-it-works h3.animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .step-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .step-card.animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .step-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 102, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 60px;
+            font-weight: 800;
+            opacity: 0.05;
+            color: #0066FF;
+        }
+
+        .step-icon {
+            margin-bottom: 20px;
+            color: #0066FF;
+        }
+
+        .step-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .step-card p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .cta-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .cta-section.animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .cta-section h4 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .cta-button {
+            background: #0066FF;
+            color: #fff;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 102, 255, 0.5);
+        }
+
+        .cta-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Email Signup Section */
+        .email-signup {
+            padding: 100px 10% 120px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .email-signup h3 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .email-signup h3.animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .email-signup p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .email-signup p.animate {
+            animation: fadeInUp 0.6s ease 0.2s forwards;
+        }
+
+        .email-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .email-form.animate {
+            animation: fadeInUp 0.6s ease 0.4s forwards;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 16px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+        }
+
+        .email-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .email-button {
+            background: #0066FF;
+            color: #fff;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .email-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 102, 255, 0.5);
+        }
+
+        .email-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 16px 24px;
+            }
+
+            .navbar-logo h1 {
+                font-size: 20px;
+            }
+
+            .navbar-button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            .hero {
+                padding: 60px 24px;
+            }
+
+            .hero h2 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .hero-button {
+                padding: 14px 28px;
+                font-size: 16px;
+            }
+
+            .features {
+                padding: 60px 24px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card h3 {
+                font-size: 20px;
+            }
+
+            .how-it-works {
+                padding: 60px 24px;
+            }
+
+            .how-it-works h3 {
+                font-size: 28px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-card h3 {
+                font-size: 20px;
+            }
+
+            .cta-section h4 {
+                font-size: 20px;
+            }
+
+            .cta-button {
+                padding: 14px 28px;
+            }
+
+            .email-signup {
+                padding: 60px 24px 80px;
+            }
+
+            .email-signup h3 {
+                font-size: 28px;
+            }
+
+            .email-signup p {
+                font-size: 16px;
+            }
+
+            .email-form {
+                flex-direction: column;
+            }
+
+            .email-input {
+                margin-bottom: 10px;
+            }
+
+            .email-button {
+                padding: 16px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5ZM20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20C8 13.373 13.373 8 20 8Z" fill="#0066FF"/>
+                    <path d="M25 15C26.657 15 28 13.657 28 12C28 10.343 26.657 9 25 9C23.343 9 22 10.343 22 12C22 13.657 23.343 15 25 15Z" fill="#0066FF"/>
+                    <path d="M20 28C22.5 28 24.5 26 24.5 23.5C24.5 21 22.5 19 20 19C17.5 19 15.5 21 15.5 23.5C15.5 26 17.5 28 20 28Z" fill="#0066FF"/>
+                </svg>
+                <h1>HuntOrca</h1>
+            </div>
+            <button class="navbar-button">Join the Hunt</button>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg">
+                <div class="bg-circle-1"></div>
+                <div class="bg-circle-2"></div>
+                <div class="bg-circle-3"></div>
+            </div>
+            
+            <h2>Hunt smart. Close fast.</h2>
+            <p>AI-powered SMB lead intelligence for sales killers, not list scrapers.</p>
+            <button class="hero-button" onclick="scrollToEmail()">Get Early Access</button>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>No More Dirty Data</h3>
+                    <p>Our AI cleans and verifies every lead, ensuring you're always working with accurate, up-to-date information.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Close in Half the Time</h3>
+                    <p>Intelligent lead scoring and prioritization helps you focus on prospects most likely to convert.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 10V3L4 14H11V21L20 10H13Z" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Built for Speed, Not Spreadsheets</h3>
+                    <p>Streamlined workflow integration puts actionable insights directly into your sales process.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <h3>How HuntOrca Works</h3>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Find Hot SMB Leads</h3>
+                    <p>Our AI scans public signals and filters out low-fit data. You get fresh, high-intent leads delivered daily.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19.4 15C19.1277 15.8031 19.2583 16.6718 19.7601 17.37C20.2619 17.9682 21.0377 18.3351 21.8601 18.34C21.9468 17.8056 22 17.1632 22 16.5C22 15.8368 21.9468 15.1944 21.8601 14.66C21.0377 14.6649 20.2619 15.0318 19.7601 15.63C19.2583 16.2282 19.1277 17.0969 19.4 17.9" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M4.6 15C4.87228 15.8031 4.74175 16.6718 4.23993 17.3C3.73811 17.9682 2.96227 18.3351 2.13993 18.34C2.05317 17.8056 2 17.1632 2 16.5C2 15.8368 2.05317 15.1944 2.13993 14.66C2.96227 14.6649 3.73811 15.0318 4.23993 15.63C4.74175 16.2282 4.87228 17.0969 4.6 17.9" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 7C13.6569 7 15 5.65685 15 4C15 2.34315 13.6569 1 12 1C10.3431 1 9 2.34315 9 4C9 5.65685 10.3431 7 12 7Z" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 23C13.6569 23 15 21.6569 15 20C15 18.3431 13.6569 17 12 17C10.3431 17 9 18.3431 9 20C9 21.6569 10.3431 23 12 23Z" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Enrich + Prioritize</h3>
+                    <p>We enrich each lead with firmographics and buying signals, then rank them by close-readiness.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.5 16.5C3 17.5 2 20.5 2 22M22 22C22 20.5 21 17.5 19.5 16.5M15.5 5C15.5 7.5 13.5 9.5 12 9.5C10.5 9.5 8.5 7.5 8.5 5C8.5 2.5 10 1 12 1C14 1 15.5 2.5 15.5 5ZM12 12C8.7 12 6 14.7 6 18V22H18V18C18 14.7 15.3 12 12 12Z" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Launch with Precision</h3>
+                    <p>Export your leads to CRM or sequence tools. No scraping, no chaos — just leads ready to convert.</p>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <h4>Want to see it in action?</h4>
+                <button class="cta-button" onclick="scrollToEmail()">Get Early Access</button>
+            </div>
+        </section>
+
+        <!-- Email Signup Section -->
+        <section class="email-signup" id="email-section">
+            <h3>Ready to Hunt Smarter?</h3>
+            <p>Limited private beta spots available. Join the waitlist today.</p>
+            
+            <form id="emailForm" class="email-form">
+                <input type="email" name="email" class="email-input" placeholder="Enter your email address" required>
+                <button type="submit" class="email-button">Get Early Access</button>
+            </form>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2025 HuntOrca. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Email form submission
+        document.getElementById("emailForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const email = e.target.email.value;
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+            
+            try {
+                const response = await fetch("/api/send-email", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email }),
+                });
+                const result = await response.json();
+                alert(result.message);
+                
+                // Reset form on success
+                if (response.ok) {
+                    e.target.reset();
+                }
+            } catch (error) {
+                alert("Something went wrong. Please try again.");
+                console.error("Error:", error);
+            }
+        });
+
+        // Scroll to email section function
+        function scrollToEmail() {
+            document.getElementById('email-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const animateElements = document.querySelectorAll(
+                '.feature-card, .step-card, .how-it-works h3, .cta-section, .email-signup h3, .email-signup p, .email-form'
+            );
+            
+            animateElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Add staggered animation delays for grid items
+        document.addEventListener('DOMContentLoaded', () => {
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+
+            const stepCards = document.querySelectorAll('.step-card');
+            stepCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+    </script>
+</body>
+</html>
